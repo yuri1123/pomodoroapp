@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 
@@ -41,6 +42,14 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
+  void restart() {
+    timer.cancel();
+    setState(() {
+      isRunning = false;
+      totalSeconds = twentyFiveMinutes;
+    });
+  }
+
   void onPausePressed() {
     timer.cancel();
     setState(() {
@@ -60,7 +69,7 @@ class _HomeScreenState extends State<HomeScreen> {
       body: Column(
         children: [
           Flexible(
-            flex: 1,
+            flex: 2,
             child: Container(
               alignment: Alignment.bottomCenter,
               child: Text(
@@ -76,13 +85,31 @@ class _HomeScreenState extends State<HomeScreen> {
             flex: 3,
             child: Container(
               alignment: Alignment.center,
-              child: IconButton(
-                iconSize: 120,
-                color: Theme.of(context).cardColor,
-                onPressed: isRunning ? onPausePressed : onStartPressed,
-                icon: isRunning
-                    ? const Icon(Icons.pause_circle_outline)
-                    : const Icon(Icons.play_circle_outline),
+              child: Column(
+                children: [
+                  IconButton(
+                    iconSize: 120,
+                    color: Theme.of(context).cardColor,
+                    onPressed: isRunning ? onPausePressed : onStartPressed,
+                    icon: isRunning
+                        ? const Icon(Icons.pause_circle_outline)
+                        : const Icon(Icons.play_circle_outline),
+                  ),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(),
+                    onPressed: restart,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text('Restart!!', style: TextStyle(fontSize: 20,color: Theme.of(context).textTheme.headline1?.color),),
+                          Icon(Icons.restart_alt,size:20,color: Theme.of(context).textTheme.headline1?.color,),
+                        ],
+                      ),
+                    ),
+                  )
+                ],
               ),
             ),
           ),
